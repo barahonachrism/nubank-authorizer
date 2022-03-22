@@ -3,7 +3,6 @@ package com.nubank.authorizer.infrastructure;
 import com.nubank.authorizer.domain.Account;
 import com.nubank.authorizer.domain.ITransactionRepository;
 import com.nubank.authorizer.domain.Transaction;
-import com.nubank.authorizer.domain.TransactionLimits;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

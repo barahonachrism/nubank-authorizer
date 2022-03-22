@@ -1,27 +1,24 @@
 package com.nubank.authorizer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@Slf4j
 @SpringBootApplication
 public class NubankAuthorizerApplication {
-
-    private static Logger LOG = LoggerFactory
-            .getLogger(NubankAuthorizerApplication.class);
-
     public static void main(String[] args) {
-        LOG.info("STARTING THE APPLICATION");
+        log.info("STARTING THE APPLICATION");
         SpringApplication.run(NubankAuthorizerApplication.class, args);
-        LOG.info("APPLICATION FINISHED");
+        log.info("APPLICATION FINISHED");
     }
 
     public void run(String... args) {
-        LOG.info("EXECUTING : command line runner");
-
+        log.info("EXECUTING : command line runner");
         for (int i = 0; i < args.length; ++i) {
-            LOG.info("args[{}]: {}", i, args[i]);
+            log.info("args[{}]: {}", i, args[i]);
         }
     }
 }

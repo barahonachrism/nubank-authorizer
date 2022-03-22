@@ -43,7 +43,7 @@ public class TransactionService implements ITransactionService {
             throw new AutorizerException(ViolationEnum.ACCOUNT_NOT_INITIALIZED);
         }
         Account account =  accountOptional.get();
-        if(!account.getActiveCard()){
+        if(Boolean.FALSE.equals(account.getActiveCard())){
             throw new AutorizerException(ViolationEnum.CARD_NOT_ACTIVE);
         }
 

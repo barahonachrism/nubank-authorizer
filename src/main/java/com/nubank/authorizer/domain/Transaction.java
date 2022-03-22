@@ -14,9 +14,8 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@NamedQueries({
-        @NamedQuery(name = "Transaction.transactionsByQuotas", query = "select count(t) from Transaction t where t.idAccount = :idAccount and t.time >= :quotaDateTimeStart and t.time <= :quotaDateTimeEnd"),
-        @NamedQuery(name = "Transaction.similarTransactions", query = "select count(t) from Transaction t where t.idAccount = :idAccount and t.time >= :quotaDateTimeStart and t.time <= :quotaDateTimeEnd and t.merchant = :merchant and t.amount = :amount")})
+@NamedQuery(name = "Transaction.transactionsByQuotas", query = "select count(t) from Transaction t where t.idAccount = :idAccount and t.time >= :quotaDateTimeStart and t.time <= :quotaDateTimeEnd")
+@NamedQuery(name = "Transaction.similarTransactions", query = "select count(t) from Transaction t where t.idAccount = :idAccount and t.time >= :quotaDateTimeStart and t.time <= :quotaDateTimeEnd and t.merchant = :merchant and t.amount = :amount")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
