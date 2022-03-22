@@ -1,9 +1,9 @@
 Feature: Manage transactions of unique credit card Nubank
   Scenario: Create account with an active credit card and valid available limit amount
-    Given Active card: true, available limit: 100, and id account: "400c8afa-7920-4f04-94b6-5a4ba34298a6"
+    Given Active card: true, available limit: 100
     Then Account is created successfully
   Scenario: The existing account is immutable
-    Given id credit card: "400c8afa-7920-4f04-94b6-5a4ba34298a6"
+    Given Account with id "400c8afa-7920-4f04-94b6-5a4ba34298a6"
     When Trying modify existing account
     Then Return account already initialized "account-already-initialized" as violation
   Scenario: No transaction should be accepted without a properly initialized account
@@ -42,6 +42,6 @@ Feature: Manage transactions of unique credit card Nubank
     Then Account is created successfully
     Then Create transaction successfully
     And Transaction amount: 10, merchant: "Burger King", time: "2019-02-13T11:02:01.000Z"
-    Then  Create transaction successfully
+    Then Create transaction successfully
     And Transaction amount: 10, merchant: "Burger King", time: "2019-02-13T11:02:10.000Z"
     Then Return violation on create transaction "doubled-transaction"

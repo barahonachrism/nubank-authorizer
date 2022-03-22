@@ -5,4 +5,5 @@ spring:
     password: ^s3cr37$
     driverClassName: org.h2.Driver
   jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true

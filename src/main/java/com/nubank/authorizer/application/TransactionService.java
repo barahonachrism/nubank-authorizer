@@ -38,7 +38,7 @@ public class TransactionService implements ITransactionService {
 
     @Transactional(readOnly = false)
     public Transaction createTransaction(Transaction transaction){
-        Optional<Account> accountOptional = findAccountById(transaction.getIdAccount());
+        Optional<Account> accountOptional = findAccountById(transaction.getAccount().getId());
         if(!accountOptional.isPresent()){
             throw new AutorizerException(ViolationEnum.ACCOUNT_NOT_INITIALIZED);
         }
@@ -55,15 +55,15 @@ public class TransactionService implements ITransactionService {
 
         LocalDateTime quotaDateTimeEnd = transaction.getTime();
 
+        transaction.setAccount(account);
 
-
-        Long countTransactions = transactionRepository.findCountTransactionByRangeDate(transaction.getIdAccount(), quotaDateTimeStart, quotaDateTimeEnd);
-        log.info("quotaDateTimeStart:{},quotaDateTimeEnd:{},countTransactions:{}", quotaDateTimeStart, quotaDateTimeEnd, countTransactions);
+        Long countTransactions = transactionRepository.findCountTransactionByRangeDate(transaction.getAccount().getId(), quotaDateTimeStart, quotaDateTimeEnd);
+        log.info("idAccount: {}, merchant: {}, quotaDateTimeStart:{},quotaDateTimeEnd:{},countTransactions:{}", transaction.getAccount().getId(), transaction.getMerchant(), quotaDateTimeStart, quotaDateTimeEnd, countTransactions);
         if(countTransactions >= TransactionLimits.QUOTA_TRANSACTIONS_LIMIT ){
             throw new AutorizerException(ViolationEnum.HIGH_FREQUENCY_SMALL_INTERVAL);
         }
 
-        Long countSimilarTransactions = transactionRepository.findCountSimilarTransactionsByRangeDate(transaction.getIdAccount(), quotaDateTimeStart, quotaDateTimeEnd, transaction.getMerchant(), transaction.getAmount());
+        Long countSimilarTransactions = transactionRepository.findCountSimilarTransactionsByRangeDate(transaction.getAccount().getId(), quotaDateTimeStart, quotaDateTimeEnd, transaction.getMerchant(), transaction.getAmount());
         if(countSimilarTransactions > 0 ){
             throw new AutorizerException(ViolationEnum.DOUBLE_TRANSACTION);
         }

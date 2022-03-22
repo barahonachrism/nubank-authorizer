@@ -6,7 +6,7 @@ import lombok.Getter;
 public class AutorizerException extends RuntimeException{
     private final ViolationEnum violationType;
     public AutorizerException(ViolationEnum violationType){
-        super(violationType.violationName);
+        super(violationType.getViolationName());
         this.violationType = violationType;
     }
 }
