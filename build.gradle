@@ -15,7 +15,6 @@ sonarqube {
         property "sonar.projectKey", "barahonachrism_nubank-authorizer"
         property "sonar.organization", "barahonachrism"
         property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.branch.name", "main"
     }
 }
 
