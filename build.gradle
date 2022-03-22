@@ -1,0 +1,85 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.sonarqube' version '3.3'
+    id 'java'
+    id 'jacoco'
+}
+java{
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "nubank-authorizer"
+        property "sonar.organization", "barahonachrism"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
+group = 'com.nubank'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // Test
+    testImplementation 'io.cucumber:cucumber-java'
+    testImplementation 'io.cucumber:cucumber-junit'
+    testImplementation 'io.cucumber:cucumber-spring'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine'
+    testImplementation 'org.junit.vintage:junit-vintage-engine'
+    testImplementation 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+}
+
+dependencyManagement {
+    dependencies {
+        dependencySet(group: 'io.cucumber', version: '7.2.3') {
+            entry 'cucumber-java'
+            entry 'cucumber-junit'
+            entry 'cucumber-spring'
+            entry 'cucumber-junit-platform-engine'
+        }
+        dependency 'org.junit.vintage:junit-vintage-engine:5.8.2'
+    }
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['uk/tw/energy/App.*','uk/tw/energy/SeedingApplicationDataConfiguration.*'])
+        }))
+    }
+}
