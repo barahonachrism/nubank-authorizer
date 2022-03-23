@@ -1,29 +1,29 @@
-#Nubank Authorizer Transaction App
+# Nubank Authorizer Transaction App
 Application to create a credit card account and register payment transactions in authorized stores
 
-##Software requirements
+## Software requirements
 - Java JDK 11
 - Docker
-##Software requirements
+## Software requirements
 This project use Clean Code Architecture with DDD patterns and BDD patterns. The architecture permits switch the adapters easily to external database or REST services as improvement. 
 
 ![Authorizer Architecture](src/main/resources/images/NubankAuthorizerArch.png "Authorizer Architecture")
 
 
 
-###Main source folder:
+### Main source folder:
 - "com.nubank.authorizer" as package base
 - "application" subpackage for logic application
 - "domain" subpackage to deliver information to client
 - "infrastructure" subpackage to implements specific integrations to external tools
 - "resources" package to locate config files to application
-###Test source folder:
+### Test source folder:
 - "com.nubank.authorizer" as package base
 - "test" subpackage to implements Unit Test and Integration Test of application
 - "resources" package to locate Gerkhins features files to implement BDD testing
 - Unit test scenarios coded in file "test/resources/features/unit_test_transactions_account.feature" relative to project folder
 - Functional/Integration test scenarios coded in file "test/resources/features/functional_test_transactions.feature" relative to project folder
-##Installation instructions
+## Installation instructions
 1. Unzip the code
 2. Execute the next code in command line console to compile and run test:
 ```
@@ -54,4 +54,3 @@ build/reports/tests/test/index.html
 ```
 build/reports/jacoco/test/html/index.html
 ```
-9. 
