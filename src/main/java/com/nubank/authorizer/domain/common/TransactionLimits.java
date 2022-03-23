@@ -1,4 +1,4 @@
-package com.nubank.authorizer.domain;
+package com.nubank.authorizer.domain.common;
 
 import lombok.experimental.UtilityClass;
 

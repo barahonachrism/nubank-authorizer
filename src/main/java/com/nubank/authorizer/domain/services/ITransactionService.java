@@ -1,4 +1,7 @@
-package com.nubank.authorizer.domain;
+package com.nubank.authorizer.domain.services;
+
+import com.nubank.authorizer.domain.entities.Account;
+import com.nubank.authorizer.domain.entities.Transaction;
 
 import java.util.Optional;
 import java.util.UUID;

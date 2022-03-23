@@ -1,4 +1,7 @@
-package com.nubank.authorizer.domain;
+package com.nubank.authorizer.domain.repositories;
+
+import com.nubank.authorizer.domain.entities.Account;
+import com.nubank.authorizer.domain.entities.Transaction;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

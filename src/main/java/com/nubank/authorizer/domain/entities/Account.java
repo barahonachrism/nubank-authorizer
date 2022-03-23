@@ -1,4 +1,4 @@
-package com.nubank.authorizer.domain;
+package com.nubank.authorizer.domain.entities;
 
 
 import lombok.AllArgsConstructor;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class Account {
     @Id
     private UUID id;
+    @NotNull
     private Boolean activeCard;
+    @NotNull
     private Integer availableLimit;
 }

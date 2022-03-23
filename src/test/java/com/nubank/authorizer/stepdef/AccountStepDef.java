@@ -1,8 +1,10 @@
 package com.nubank.authorizer.stepdef;
 
-import com.nubank.authorizer.domain.*;
-import io.cucumber.java.ParameterType;
-import io.cucumber.java.en.And;
+import com.nubank.authorizer.domain.common.ViolationEnum;
+import com.nubank.authorizer.domain.entities.Account;
+import com.nubank.authorizer.domain.entities.Transaction;
+import com.nubank.authorizer.domain.exceptions.AutorizerException;
+import com.nubank.authorizer.domain.services.ITransactionService;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,11 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
 public class AccountStepDef {
-    private ViolationEnum violationType;
+    private List<ViolationEnum> violationTypeList;
     private Transaction transaction;
     private Account account;
 
@@ -49,14 +52,18 @@ public class AccountStepDef {
             savedAccount.setAvailableLimit(1000);
             Account savedAccountAgain = transactionService.createAccount(account);
         } catch(AutorizerException ex){
-            this.violationType = ex.getViolationType();
+            this.violationTypeList = ex.getViolationTypeList();
         }
         Assertions.assertTrue(true);
     }
 
     @Then("Return account already initialized {string} as violation")
     public void return_account_already_initialized_as_violation(String violationName) {
-        Assertions.assertEquals(violationType.getViolationName(),violationName);
+        for(ViolationEnum violationEnum :violationTypeList){
+            log.info(violationEnum.getViolationName());
+        }
+        Assertions.assertEquals(violationTypeList.size(),1);
+        Assertions.assertEquals(violationTypeList.get(0).getViolationName(),violationName);
     }
 
     @Given("Account with id {string}")
@@ -70,7 +77,8 @@ public class AccountStepDef {
             transactionService.createTransaction(transaction);
             Assertions.assertFalse(true,"La transaccion se creo con errores de validacion");
         } catch(AutorizerException ex){
-            Assertions.assertEquals(ex.getViolationType().getViolationName(),violationName);
+            Assertions.assertEquals(ex.getViolationTypeList().size(),1);
+            Assertions.assertEquals(ex.getViolationTypeList().get(0).getViolationName(),violationName);
         }
     }
 

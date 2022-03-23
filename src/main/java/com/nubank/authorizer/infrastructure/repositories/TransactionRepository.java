@@ -1,8 +1,8 @@
-package com.nubank.authorizer.infrastructure;
+package com.nubank.authorizer.infrastructure.repositories;
 
-import com.nubank.authorizer.domain.Account;
-import com.nubank.authorizer.domain.ITransactionRepository;
-import com.nubank.authorizer.domain.Transaction;
+import com.nubank.authorizer.domain.entities.Account;
+import com.nubank.authorizer.domain.repositories.ITransactionRepository;
+import com.nubank.authorizer.domain.entities.Transaction;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

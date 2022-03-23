@@ -1,4 +1,4 @@
-package com.nubank.authorizer.domain;
+package com.nubank.authorizer.domain.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -21,10 +22,14 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private UUID id;
+    @NotNull
     private String merchant;
+    @NotNull
     private Integer amount;
+    @NotNull
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime time;
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_account", referencedColumnName = "id")
     private Account account;
