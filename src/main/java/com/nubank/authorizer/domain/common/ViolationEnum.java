@@ -10,7 +10,7 @@ public enum ViolationEnum {
     ACCOUNT_NOT_INITIALIZED("account-not-initialized"),
     INSUFFICIENT_LIMIT("insufficient-limit"),
     HIGH_FREQUENCY_SMALL_INTERVAL("high-frequency-small-interval"),
-    DOUBLE_TRANSACTION("double-transaction");
+    DOUBLED_TRANSACTION("doubled-transaction");
     ViolationEnum(String violationName){
         this.violationName = violationName;
     }

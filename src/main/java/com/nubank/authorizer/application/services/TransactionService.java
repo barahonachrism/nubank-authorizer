@@ -75,7 +75,7 @@ public class TransactionService implements ITransactionService {
 
         Long countSimilarTransactions = transactionRepository.findCountSimilarTransactionsByRangeDate(transaction.getAccount().getId(), quotaDateTimeStart, quotaDateTimeEnd, transaction.getMerchant(), transaction.getAmount());
         if(countSimilarTransactions > 0 ){
-            violationEnumList.add(ViolationEnum.DOUBLE_TRANSACTION);
+            violationEnumList.add(ViolationEnum.DOUBLED_TRANSACTION);
         }
 
         if(violationEnumList.isEmpty()){

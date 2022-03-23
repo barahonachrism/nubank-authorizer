@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 @Slf4j
 public class TransactionsIntegrationTestStepDef {
@@ -32,7 +33,8 @@ public class TransactionsIntegrationTestStepDef {
 
     @When("Process request")
     public void process_request() throws JsonProcessingException {
-        response = transactionController.processTransactions(request);
+        UUID idAccount = UUID.randomUUID();
+        response = transactionController.processTransactions(idAccount,request);
     }
 
     @Then("Output response is equal to {string} file")

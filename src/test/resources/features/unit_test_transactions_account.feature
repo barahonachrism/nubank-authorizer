@@ -44,4 +44,4 @@ Feature: Unit tests collection to manage transactions of a Nubank credit card
     And Transaction amount: 10, merchant: "Burger King", time: "2019-02-13T11:02:01.000Z"
     Then Create transaction successfully
     And Transaction amount: 10, merchant: "Burger King", time: "2019-02-13T11:02:10.000Z"
-    Then Return violation on create transaction "double-transaction"
+    Then Return violation on create transaction "doubled-transaction"

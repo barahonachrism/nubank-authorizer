@@ -21,14 +21,13 @@ public class TransactionController {
     private final String accountField = "account";
     private final String transactionField = "transaction";
     private final ObjectMapper objectMapper;
-    private final UUID idAccount = UUID.randomUUID();
     private ITransactionService transactionService;
     public TransactionController(ITransactionService transactionService, ObjectMapper objectMapper){
         this.transactionService = transactionService;
         this.objectMapper = objectMapper;
     }
 
-    public String processTransactions(String transactions) throws JsonProcessingException {
+    public String processTransactions(UUID idAccount, String transactions) throws JsonProcessingException {
         StringBuilder responseBuilder = new StringBuilder();
         StringTokenizer transactionTokenizer = new StringTokenizer(transactions,"\n");
         while(transactionTokenizer.hasMoreElements()){
