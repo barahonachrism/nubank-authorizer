@@ -9,7 +9,6 @@ import com.nubank.authorizer.domain.exceptions.AutorizerException;
 import com.nubank.authorizer.domain.services.ITransactionService;
 import com.nubank.authorizer.domain.vo.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.StringTokenizer;
@@ -18,8 +17,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 public class TransactionController {
-    private final String accountField = "account";
-    private final String transactionField = "transaction";
+    private static final String ACCOUNT_FIELD = "account";
     private final ObjectMapper objectMapper;
     private ITransactionService transactionService;
     public TransactionController(ITransactionService transactionService, ObjectMapper objectMapper){
@@ -33,7 +31,7 @@ public class TransactionController {
         while(transactionTokenizer.hasMoreElements()){
             String transactionToProcess = transactionTokenizer.nextToken();
             //If trying create account
-            if(transactionToProcess.indexOf(accountField)>0){
+            if(transactionToProcess.indexOf(ACCOUNT_FIELD)>=0){
                 AccountRequest accountRequest = objectMapper.readValue(transactionToProcess, AccountRequest.class);
                 Account account = ITransactionMapper.INSTANCE.accountVoToAccount(accountRequest.getAccount());
                 account.setId(idAccount);

@@ -62,8 +62,8 @@ public class AccountStepDef {
         for(ViolationEnum violationEnum :violationTypeList){
             log.info(violationEnum.getViolationName());
         }
-        Assertions.assertEquals(violationTypeList.size(),1);
-        Assertions.assertEquals(violationTypeList.get(0).getViolationName(),violationName);
+        Assertions.assertEquals(1, violationTypeList.size());
+        Assertions.assertEquals(violationName, violationTypeList.get(0).getViolationName());
     }
 
     @Given("Account with id {string}")
@@ -77,8 +77,8 @@ public class AccountStepDef {
             transactionService.createTransaction(transaction);
             Assertions.assertFalse(true,"La transaccion se creo con errores de validacion");
         } catch(AutorizerException ex){
-            Assertions.assertEquals(ex.getViolationTypeList().size(),1);
-            Assertions.assertEquals(ex.getViolationTypeList().get(0).getViolationName(),violationName);
+            Assertions.assertEquals(1,ex.getViolationTypeList().size());
+            Assertions.assertEquals(violationName,ex.getViolationTypeList().get(0).getViolationName());
         }
     }
 
