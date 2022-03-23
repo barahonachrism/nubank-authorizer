@@ -43,8 +43,7 @@ gradlew bootBuildImage
 ```
 6. Run application in container mode.  Replace "src\test\resources\inputs\transaction_high_frequency_small_interval.request" for another input file operations.
 ```
-docker run --rm --name nubank-authorizer -e "SPRING_PROFILES_ACTIVE=pro" -i nubank-authorizer:0.0.1-SNAPSHOT < src\test\resources\inputs\transacti
-on_high_frequency_small_interval.request
+docker run --rm --name nubank-authorizer -e "SPRING_PROFILES_ACTIVE=pro" -i nubank-authorizer:0.0.1-SNAPSHOT < src\test\resources\inputs\transaction_high_frequency_small_interval.request
 ```
 7. To view the test report, open the next file relative to this project folder
 ```

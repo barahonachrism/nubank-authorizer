@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nubank.authorizer.application.mapper.ITransactionMapper;
 import com.nubank.authorizer.domain.entities.Account;
 import com.nubank.authorizer.domain.entities.Transaction;
-import com.nubank.authorizer.domain.exceptions.AutorizerException;
+import com.nubank.authorizer.domain.exceptions.AuthorizerException;
 import com.nubank.authorizer.domain.services.ITransactionService;
 import com.nubank.authorizer.domain.vo.*;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
+/**
+ * Controller convert operations request in Java Value Objects and write data
+ * to database validatin the business rules.
+ */
 @Slf4j
 @Component
 public class TransactionController {
@@ -25,6 +29,30 @@ public class TransactionController {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Process operation transacction in string format and populate
+     * in database. Example input:
+     * <code>
+     * {"account": {"active-card": true, "available-limit": 100}}
+     * {"transaction": {"merchant": "Burger King", "amount": 20, "time": "2019-02-13T11:00:00.000Z"}}
+     * {"transaction": {"merchant": "Habbib's", "amount": 20, "time": "2019-02-13T11:00:01.000Z"}}
+     * {"transaction": {"merchant": "McDonald's", "amount": 20, "time": "2019-02-13T11:01:01.000Z"}}
+     * {"transaction": {"merchant": "Subway", "amount": 20, "time": "2019-02-13T11:01:31.000Z"}}
+     * {"transaction": {"merchant": "Burger King", "amount": 10, "time": "2019-02-13T12:00:00.000Z"}}
+     * </code>
+     * @param idAccount account identification
+     * @param transactions transactions in string format
+     * @return Result of process each operation. Example output:
+     * <code>
+     * {"account":{"active-card":true,"available-limit":100},"violations":[]}
+     * {"account":{"active-card":true,"available-limit":80},"violations":[]}
+     * {"account":{"active-card":true,"available-limit":60},"violations":[]}
+     * {"account":{"active-card":true,"available-limit":40},"violations":[]}
+     * {"account":{"active-card":true,"available-limit":40},"violations":["high-frequency-small-interval"]}
+     * {"account":{"active-card":true,"available-limit":30},"violations":[]}
+     * </code>
+     * @throws JsonProcessingException
+     */
     public String processTransactions(UUID idAccount, String transactions) throws JsonProcessingException {
         StringBuilder responseBuilder = new StringBuilder();
         StringTokenizer transactionTokenizer = new StringTokenizer(transactions,"\n");
@@ -40,7 +68,7 @@ public class TransactionController {
                 try{
                     Account createdAccount = transactionService.createAccount(account);
                     accountResponse.setAccount(ITransactionMapper.INSTANCE.accountToAccountVo(createdAccount));
-                } catch(AutorizerException ex){
+                } catch(AuthorizerException ex){
                     accountResponse.setAccount(accountRequest.getAccount());
                     accountResponse.getViolations().addAll(ex.getViolationTypeList());
                 }
@@ -56,7 +84,7 @@ public class TransactionController {
                 try{
                     createdTransaction = transactionService.createTransaction(transaction);
                     accountResponse.setAccount(ITransactionMapper.INSTANCE.accountToAccountVo(createdTransaction.getAccount()));
-                } catch(AutorizerException ex){
+                } catch(AuthorizerException ex){
                     accountResponse.setAccount(ITransactionMapper.INSTANCE.accountToAccountVo(transaction.getAccount()));
                     accountResponse.getViolations().addAll(ex.getViolationTypeList());
                 }

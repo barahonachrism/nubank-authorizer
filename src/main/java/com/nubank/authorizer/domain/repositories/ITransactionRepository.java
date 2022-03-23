@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Account or transaction operations over database
+ */
 public interface ITransactionRepository {
     Account createAccount(Account account);
     Account updateAccount(Account account);

@@ -3,7 +3,7 @@ package com.nubank.authorizer.test;
 import com.nubank.authorizer.domain.common.ViolationEnum;
 import com.nubank.authorizer.domain.entities.Account;
 import com.nubank.authorizer.domain.entities.Transaction;
-import com.nubank.authorizer.domain.exceptions.AutorizerException;
+import com.nubank.authorizer.domain.exceptions.AuthorizerException;
 import com.nubank.authorizer.domain.services.ITransactionService;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -18,8 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Implement scenarios of unit test scenarios written in Gherkin format
+ */
 @Slf4j
-public class AccountStepDef {
+public class TransactionUnitTestStepDef {
     private List<ViolationEnum> violationTypeList;
     private Transaction transaction;
     private Account account;
@@ -52,7 +55,7 @@ public class AccountStepDef {
             Account savedAccount = transactionService.createAccount(account);
             savedAccount.setAvailableLimit(1000);
             Account savedAccountAgain = transactionService.createAccount(account);
-        } catch(AutorizerException ex){
+        } catch(AuthorizerException ex){
             this.violationTypeList = ex.getViolationTypeList();
         }
         Assertions.assertTrue(true);
@@ -77,7 +80,7 @@ public class AccountStepDef {
         try{
             transactionService.createTransaction(transaction);
             Assertions.assertFalse(true,"La transaccion se creo con errores de validacion");
-        } catch(AutorizerException ex){
+        } catch(AuthorizerException ex){
             Assertions.assertEquals(1,ex.getViolationTypeList().size());
             Assertions.assertEquals(violationName,ex.getViolationTypeList().get(0).getViolationName());
         }
@@ -91,7 +94,7 @@ public class AccountStepDef {
         try{
             transactionService.createTransaction(transaction);
             Assertions.assertFalse(true,"La transaccion se creo con errores de validacion");
-        } catch(AutorizerException ex){
+        } catch(AuthorizerException ex){
             Assertions.assertArrayEquals(violationEnumExpectedList.toArray(),ex.getViolationTypeList().toArray());
         }
     }

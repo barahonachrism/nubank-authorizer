@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+/**
+ * Credit card account entity
+ */
 @Data
 @Entity
 @Builder

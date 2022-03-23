@@ -3,6 +3,10 @@ package com.nubank.authorizer.domain.common;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
+/**
+ * Violation to business rules when process the operations
+ * of credit card
+ */
 @Getter
 public enum ViolationEnum {
     ACCOUNT_ALREADY_INITIALIZED("account-already-initialized"),

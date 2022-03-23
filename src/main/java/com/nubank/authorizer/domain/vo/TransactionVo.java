@@ -6,6 +6,9 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+/**
+ * Value object of transaction entity to client response
+ */
 @Getter
 @Setter
 public class TransactionVo {

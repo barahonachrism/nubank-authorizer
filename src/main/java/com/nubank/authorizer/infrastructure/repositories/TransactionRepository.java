@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implements SQL sentences of transaction operations
+ */
 @Repository
 public class TransactionRepository implements ITransactionRepository {
     private EntityManager entityManager;

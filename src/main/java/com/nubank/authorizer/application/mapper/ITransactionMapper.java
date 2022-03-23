@@ -7,6 +7,9 @@ import com.nubank.authorizer.domain.vo.TransactionVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * Convert java entities to value objets an vice versa
+ */
 @Mapper
 public interface ITransactionMapper {
     ITransactionMapper INSTANCE = Mappers.getMapper(ITransactionMapper.class);

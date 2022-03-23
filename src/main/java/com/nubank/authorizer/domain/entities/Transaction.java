@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Payment transaction entity
+ */
 @Data
 @Builder
 @Entity

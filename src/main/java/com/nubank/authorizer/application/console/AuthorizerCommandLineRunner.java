@@ -13,6 +13,10 @@ import org.springframework.stereotype.Component;
 import java.util.Scanner;
 import java.util.UUID;
 
+/**
+ * Component to process transactions from file operations in command line.
+ * Available only in production environment.
+ */
 @Profile("pro")
 @Component
 @Slf4j
@@ -27,20 +31,21 @@ public class AuthorizerCommandLineRunner implements CommandLineRunner, Applicati
     }
     @Override
     public void run(String... args) throws Exception {
+        //Catch each line of file when use redirection operator "<"
+        // example: app < operations
         Scanner input = new Scanner(System.in);
         StringBuilder request = new StringBuilder();
         while(input.hasNext()){
             request.append(input.nextLine());
             request.append("\n");
         }
+        //Process the operations to print result in console
         if(request.length() > 0){
             UUID idAccount = UUID.randomUUID();
             String response = transactionController.processTransactions(idAccount, request.toString());
             System.out.println(response);
             SpringApplication.exit(context, () -> 0);
         }
-
-
     }
 
     @Override

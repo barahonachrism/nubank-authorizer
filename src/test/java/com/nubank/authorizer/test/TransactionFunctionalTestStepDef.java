@@ -16,8 +16,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
+/**
+ * Implement scenarios of functional test scenarios written in Gherkin format
+ */
 @Slf4j
-public class TransactionsFunctionalTestStepDef {
+public class TransactionFunctionalTestStepDef {
     private final String inputFolderName = "/inputs/";
     private final String outputFolderName = "/outputs/";
     private String request;

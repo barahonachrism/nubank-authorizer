@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Value object to transfer information to client of account credit card
+ */
 @Getter
 @Setter
 public class AccountVo {
