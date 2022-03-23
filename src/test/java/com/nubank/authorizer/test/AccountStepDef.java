@@ -1,4 +1,4 @@
-package com.nubank.authorizer.stepdef;
+package com.nubank.authorizer.test;
 
 import com.nubank.authorizer.domain.common.ViolationEnum;
 import com.nubank.authorizer.domain.entities.Account;

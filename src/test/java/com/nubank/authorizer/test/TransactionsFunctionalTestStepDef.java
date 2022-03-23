@@ -1,4 +1,4 @@
-package com.nubank.authorizer.stepdef;
+package com.nubank.authorizer.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nubank.authorizer.application.controllers.TransactionController;
@@ -17,7 +17,7 @@ import java.net.URISyntaxException;
 import java.util.UUID;
 
 @Slf4j
-public class TransactionsIntegrationTestStepDef {
+public class TransactionsFunctionalTestStepDef {
     private final String inputFolderName = "/inputs/";
     private final String outputFolderName = "/outputs/";
     private String request;

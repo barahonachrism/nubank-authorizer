@@ -10,7 +10,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface ITransactionMapper {
     ITransactionMapper INSTANCE = Mappers.getMapper(ITransactionMapper.class);
-    TransactionVo transactionToTransactionVo(Transaction transaction);
     AccountVo accountToAccountVo(Account accountVo);
     Transaction transactionVoToTransaction(TransactionVo transactionVo);
     Account accountVoToAccount(AccountVo accountVo);

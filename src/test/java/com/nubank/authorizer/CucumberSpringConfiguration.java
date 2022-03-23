@@ -3,6 +3,7 @@ package com.nubank.authorizer;
 import io.cucumber.java.ParameterType;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(classes = NubankAuthorizerApplication.class)
 @CucumberContextConfiguration
