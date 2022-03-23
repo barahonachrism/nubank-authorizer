@@ -45,3 +45,23 @@ Feature: Unit tests collection to manage transactions of a Nubank credit card
     Then Create transaction successfully
     And Transaction amount: 10, merchant: "Burger King", time: "2019-02-13T11:02:10.000Z"
     Then Return violation on create transaction "doubled-transaction"
+  Scenario: Validate multiple violations in transaction
+    Given Active card: true, available limit: 100, and id account: "400c8afa-7920-4f74-94b6-8a4ba34298b0"
+    Then Account is created successfully
+    And Transaction amount: 10, merchant: "McDonald's", time: "2019-02-13T11:00:01.000Z"
+    Then Create transaction successfully
+    And Transaction amount: 20, merchant: "Burger King", time: "2019-02-13T11:00:02.000Z"
+    Then Create transaction successfully
+    And Transaction amount: 5, merchant: "Burger King", time: "2019-02-13T11:00:07.000Z"
+    Then Create transaction successfully
+    And Transaction amount: 5, merchant: "Burger King", time: "2019-02-13T11:00:08.000Z"
+    Then Return multiple violations on create transaction: "high-frequency-small-interval","doubled-transaction"
+    And Transaction amount: 150, merchant: "Burger King", time: "2019-02-13T11:00:18.000Z"
+    Then Return multiple violations on create transaction: "insufficient-limit","high-frequency-small-interval"
+    And Transaction amount: 15, merchant: "Burger King", time: "2019-02-13T12:00:27.000Z"
+    Then Create transaction successfully
+
+
+
+
+

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,6 +80,19 @@ public class AccountStepDef {
         } catch(AutorizerException ex){
             Assertions.assertEquals(1,ex.getViolationTypeList().size());
             Assertions.assertEquals(violationName,ex.getViolationTypeList().get(0).getViolationName());
+        }
+    }
+
+    @Then("Return multiple violations on create transaction: {string},{string}")
+    public void return_multiple_violations_on_create_transaction(String violation1, String violation2) {
+        List<ViolationEnum> violationEnumExpectedList = new ArrayList<>();
+        violationEnumExpectedList.add(ViolationEnum.getEnum(violation1));
+        violationEnumExpectedList.add(ViolationEnum.getEnum(violation2));
+        try{
+            transactionService.createTransaction(transaction);
+            Assertions.assertFalse(true,"La transaccion se creo con errores de validacion");
+        } catch(AutorizerException ex){
+            Assertions.assertArrayEquals(violationEnumExpectedList.toArray(),ex.getViolationTypeList().toArray());
         }
     }
 

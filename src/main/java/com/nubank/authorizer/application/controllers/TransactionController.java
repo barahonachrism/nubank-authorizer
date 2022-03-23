@@ -41,7 +41,7 @@ public class TransactionController {
                     Account createdAccount = transactionService.createAccount(account);
                     accountResponse.setAccount(ITransactionMapper.INSTANCE.accountToAccountVo(createdAccount));
                 } catch(AutorizerException ex){
-                    accountResponse.setAccount(new AccountVo());
+                    accountResponse.setAccount(accountRequest.getAccount());
                     accountResponse.getViolations().addAll(ex.getViolationTypeList());
                 }
                 addEntryResponse(responseBuilder,accountResponse);

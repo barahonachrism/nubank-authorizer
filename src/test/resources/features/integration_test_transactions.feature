@@ -3,6 +3,10 @@ Feature: Integration tests collection to manage transactions of a Nubank credit 
     Given File input "transactions_successfully.request" file
     When Process request
     Then Output response is equal to "transactions_successfully.response" file
+  Scenario: Create account already initialized
+    Given File input "transactions_account_already_initialized.request" file
+    When Process request
+    Then Output response is equal to "transactions_account_already_initialized.response" file
   Scenario: Processing a transaction which violates the account-not-initialized logic
     Given File input "transactions_account_not_initialized.request" file
     When Process request

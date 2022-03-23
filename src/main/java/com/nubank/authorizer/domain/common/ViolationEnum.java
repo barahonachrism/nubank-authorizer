@@ -16,4 +16,13 @@ public enum ViolationEnum {
     }
     @JsonValue
     private String violationName;
+
+    public static ViolationEnum getEnum(String value) {
+        for (ViolationEnum violationEnum : ViolationEnum.values()) {
+            if (violationEnum.violationName.equals(value)) {
+                return violationEnum;
+            }
+        }
+        throw new IllegalArgumentException("Invalid ViolationEnum value: " + value);
+    }
 }
