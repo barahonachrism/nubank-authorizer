@@ -4,12 +4,22 @@ Application to create a credit card account and register payment transactions in
 ## Software requirements
 - Java JDK 11
 - Docker
-## Software requirements
+## Architecture
 This project use Clean Code Architecture with DDD patterns and BDD patterns. The architecture permits switch the adapters easily to external database or REST services as improvement. 
 
 ![Authorizer Architecture](src/main/resources/images/NubankAuthorizerArch.png "Authorizer Architecture")
 
-
+## Technology
+The application use the next tools and frameworks:
+- Java 11
+- Gradle 7
+- Spring Boot 2
+- JPA 2.2
+- H2 Database embedded
+- Lombok
+- Mapstruct
+- Cucumber 7
+- Junit 5
 
 ### Main source folder:
 - "com.nubank.authorizer" as package base
