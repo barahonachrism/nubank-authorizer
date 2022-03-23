@@ -1,8 +1,6 @@
 package com.nubank.authorizer.application.console;
 
 import com.nubank.authorizer.application.controllers.TransactionController;
-import com.nubank.authorizer.domain.common.ViolationEnum;
-import com.nubank.authorizer.domain.exceptions.AutorizerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
