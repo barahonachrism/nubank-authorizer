@@ -20,14 +20,14 @@ The application use the next tools and frameworks:
 - Mapstruct
 - Cucumber 7
 - Junit 5
-
-### Main source folder:
+## Structure folders
+### Main source folder
 - "com.nubank.authorizer" as package base
 - "application" subpackage for logic application
 - "domain" subpackage to deliver information to client
 - "infrastructure" subpackage to implements specific integrations to external tools
 - "resources" package to locate config files to application
-### Test source folder:
+### Test source folder
 - "com.nubank.authorizer" as package base
 - "test" subpackage to implements Unit Test and Integration Test of application
 - "resources" package to locate Gerkhins features files to implement BDD testing
