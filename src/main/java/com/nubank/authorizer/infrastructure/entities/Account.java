@@ -1,10 +1,7 @@
-package com.nubank.authorizer.domain.entities;
+package com.nubank.authorizer.infrastructure.entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,7 +11,8 @@ import java.util.UUID;
 /**
  * Credit card account entity
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor

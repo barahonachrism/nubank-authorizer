@@ -1,8 +1,8 @@
 package com.nubank.authorizer.infrastructure.repositories;
 
-import com.nubank.authorizer.domain.entities.Account;
+import com.nubank.authorizer.infrastructure.entities.Account;
 import com.nubank.authorizer.domain.repositories.ITransactionRepository;
-import com.nubank.authorizer.domain.entities.Transaction;
+import com.nubank.authorizer.infrastructure.entities.Transaction;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,7 +16,7 @@ import java.util.UUID;
  */
 @Repository
 public class TransactionRepository implements ITransactionRepository {
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
     public TransactionRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -31,8 +31,8 @@ public class TransactionRepository implements ITransactionRepository {
     }
 
     @Override
-    public Account updateAccount(Account account) {
-        return entityManager.merge(account);
+    public void updateAccount(Account account) {
+        entityManager.merge(account);
     }
 
     @Override

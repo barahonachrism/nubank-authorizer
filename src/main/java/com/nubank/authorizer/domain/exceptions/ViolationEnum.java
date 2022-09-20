@@ -1,4 +1,4 @@
-package com.nubank.authorizer.domain.common;
+package com.nubank.authorizer.domain.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public enum ViolationEnum {
         this.violationName = violationName;
     }
     @JsonValue
-    private String violationName;
+    private final String violationName;
 
     public static ViolationEnum getEnum(String value) {
         for (ViolationEnum violationEnum : ViolationEnum.values()) {

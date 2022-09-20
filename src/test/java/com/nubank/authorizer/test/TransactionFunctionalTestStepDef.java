@@ -1,7 +1,7 @@
 package com.nubank.authorizer.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.nubank.authorizer.application.controllers.TransactionController;
+import com.nubank.authorizer.infrastructure.controllers.TransactionController;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

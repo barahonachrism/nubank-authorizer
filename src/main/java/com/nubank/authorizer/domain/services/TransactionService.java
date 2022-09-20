@@ -1,12 +1,12 @@
-package com.nubank.authorizer.application.services;
+package com.nubank.authorizer.domain.services;
 
-import com.nubank.authorizer.domain.common.TransactionLimits;
-import com.nubank.authorizer.domain.common.ViolationEnum;
-import com.nubank.authorizer.domain.entities.Account;
-import com.nubank.authorizer.domain.entities.Transaction;
+import com.nubank.authorizer.domain.exceptions.TransactionLimits;
+import com.nubank.authorizer.domain.exceptions.ViolationEnum;
+import com.nubank.authorizer.infrastructure.entities.Account;
+import com.nubank.authorizer.infrastructure.entities.Transaction;
 import com.nubank.authorizer.domain.exceptions.AuthorizerException;
 import com.nubank.authorizer.domain.repositories.ITransactionRepository;
-import com.nubank.authorizer.domain.services.ITransactionService;
+import com.nubank.authorizer.domain.usecase.ITransactionUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +23,9 @@ import java.util.UUID;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-public class TransactionService implements ITransactionService {
+public class TransactionService implements ITransactionUseCase {
 
-    private ITransactionRepository transactionRepository;
+    private final ITransactionRepository transactionRepository;
 
     public TransactionService(ITransactionRepository transactionRepository){
         this.transactionRepository = transactionRepository;
@@ -33,10 +33,10 @@ public class TransactionService implements ITransactionService {
 
     /**
      * Create a credit card account
-     * @param account
+     * @param account is account to create
      * @return created account
      */
-    @Transactional(readOnly = false)
+    @Transactional
     public Account createAccount(Account account) {
         if(account.getId() != null){
             Optional<Account> existingAccount = transactionRepository.findAccountById(account.getId());
@@ -62,11 +62,11 @@ public class TransactionService implements ITransactionService {
      * @param transaction transaction to create
      * @return Created transaction
      */
-    @Transactional(readOnly = false)
+    @Transactional
     public Transaction createTransaction(Transaction transaction){
         Optional<Account> accountOptional = findAccountById(transaction.getAccount().getId());
         List<ViolationEnum> violationEnumList = new ArrayList<>();
-        if(!accountOptional.isPresent()){
+        if(accountOptional.isEmpty()){
             transaction.setAccount(new Account());
             throw new AuthorizerException("Account not is initialized",ViolationEnum.ACCOUNT_NOT_INITIALIZED);
         }

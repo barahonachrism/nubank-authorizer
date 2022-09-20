@@ -1,7 +1,7 @@
-package com.nubank.authorizer.application.mapper;
+package com.nubank.authorizer.domain.mapper;
 
-import com.nubank.authorizer.domain.entities.Account;
-import com.nubank.authorizer.domain.entities.Transaction;
+import com.nubank.authorizer.infrastructure.entities.Account;
+import com.nubank.authorizer.infrastructure.entities.Transaction;
 import com.nubank.authorizer.domain.vo.AccountVo;
 import com.nubank.authorizer.domain.vo.TransactionVo;
 import org.mapstruct.Mapper;

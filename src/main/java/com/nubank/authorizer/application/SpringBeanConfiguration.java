@@ -1,4 +1,4 @@
-package com.nubank.authorizer.infrastructure.repositories;
+package com.nubank.authorizer.application;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

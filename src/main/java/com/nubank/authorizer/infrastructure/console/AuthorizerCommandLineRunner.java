@@ -1,9 +1,8 @@
-package com.nubank.authorizer.application.console;
+package com.nubank.authorizer.infrastructure.console;
 
-import com.nubank.authorizer.application.controllers.TransactionController;
+import com.nubank.authorizer.infrastructure.controllers.TransactionController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
@@ -21,10 +20,8 @@ import java.util.UUID;
 @Component
 @Slf4j
 public class AuthorizerCommandLineRunner implements CommandLineRunner, ApplicationContextAware {
-    private TransactionController transactionController;
+    private final TransactionController transactionController;
     private ApplicationContext context;
-    @Value("${spring.profiles.active}")
-    private String activeProfile;
 
     public AuthorizerCommandLineRunner(TransactionController transactionController){
         this.transactionController = transactionController;

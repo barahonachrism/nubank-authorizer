@@ -1,10 +1,10 @@
 package com.nubank.authorizer.test;
 
-import com.nubank.authorizer.domain.common.ViolationEnum;
-import com.nubank.authorizer.domain.entities.Account;
-import com.nubank.authorizer.domain.entities.Transaction;
+import com.nubank.authorizer.domain.exceptions.ViolationEnum;
+import com.nubank.authorizer.infrastructure.entities.Account;
+import com.nubank.authorizer.infrastructure.entities.Transaction;
 import com.nubank.authorizer.domain.exceptions.AuthorizerException;
-import com.nubank.authorizer.domain.services.ITransactionService;
+import com.nubank.authorizer.domain.usecase.ITransactionUseCase;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -28,7 +28,7 @@ public class TransactionUnitTestStepDef {
     private Account account;
 
     @Autowired
-    private ITransactionService transactionService;
+    private ITransactionUseCase transactionService;
 
     @Given("Active card: {booleanValue}, available limit: {int}, and id account: {string}")
     public void active_card_true_available_limit_and_id_account(boolean activeCard, int availableLimit, String idAccount) {

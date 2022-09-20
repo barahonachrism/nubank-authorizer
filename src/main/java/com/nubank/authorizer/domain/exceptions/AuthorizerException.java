@@ -1,6 +1,5 @@
 package com.nubank.authorizer.domain.exceptions;
 
-import com.nubank.authorizer.domain.common.ViolationEnum;
 import lombok.Getter;
 
 import java.util.ArrayList;

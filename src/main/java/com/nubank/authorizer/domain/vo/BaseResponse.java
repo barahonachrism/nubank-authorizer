@@ -1,6 +1,6 @@
 package com.nubank.authorizer.domain.vo;
 
-import com.nubank.authorizer.domain.common.ViolationEnum;
+import com.nubank.authorizer.domain.exceptions.ViolationEnum;
 import lombok.Getter;
 import lombok.Setter;
 
