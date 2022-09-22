@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Entry point to run application
  */
 @Slf4j
-@SpringBootApplication(scanBasePackages = "com.nubank.authorizer")
+@SpringBootApplication
 public class NubankAuthorizerApplication {
     public static void main(String[] args) {
         SpringApplication.run(NubankAuthorizerApplication.class, args);

@@ -1,18 +1,18 @@
 package com.nubank.authorizer.domain.services;
 
-import com.nubank.authorizer.domain.exceptions.TransactionLimits;
 import com.nubank.authorizer.domain.exceptions.ViolationEnum;
+import com.nubank.authorizer.domain.mapper.ITransactionMapper;
+import com.nubank.authorizer.domain.rules.RuleExecutor;
+import com.nubank.authorizer.domain.usecase.*;
+import com.nubank.authorizer.domain.vo.AccountVo;
 import com.nubank.authorizer.infrastructure.entities.Account;
 import com.nubank.authorizer.infrastructure.entities.Transaction;
 import com.nubank.authorizer.domain.exceptions.AuthorizerException;
 import com.nubank.authorizer.domain.repositories.ITransactionRepository;
-import com.nubank.authorizer.domain.usecase.ITransactionUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,24 +27,39 @@ public class TransactionService implements ITransactionUseCase {
 
     private final ITransactionRepository transactionRepository;
 
-    public TransactionService(ITransactionRepository transactionRepository){
+    private final List<IAccountRule> accountRules;
+
+    private final List<IAccountTransactionRule> accountTransactionRules;
+
+    private final List<ITransactionRule> transactionRules;
+
+    private final RuleExecutor ruleExecutor;
+
+    public TransactionService(ITransactionRepository transactionRepository, List<IAccountRule> accountRules, List<IAccountTransactionRule> accountTransactionRules, List<ITransactionRule> transactionRules,RuleExecutor ruleExecutor){
         this.transactionRepository = transactionRepository;
+        this.accountRules = accountRules;
+        this.accountTransactionRules = accountTransactionRules;
+        this.transactionRules = transactionRules;
+        this.ruleExecutor = ruleExecutor;
     }
 
     /**
      * Create a credit card account
+     *
      * @param account is account to create
      * @return created account
      */
     @Transactional
-    public Account createAccount(Account account) {
-        if(account.getId() != null){
-            Optional<Account> existingAccount = transactionRepository.findAccountById(account.getId());
-            if(existingAccount.isPresent()){
-                throw new AuthorizerException("Account already initialized", ViolationEnum.ACCOUNT_ALREADY_INITIALIZED);
-            }
+    public AccountVo createAccount(Account account) {
+        List<ViolationEnum> violationRules = ruleExecutor.executeRules(account,accountRules);
+
+        if(violationRules.isEmpty()){
+
+            return ITransactionMapper.INSTANCE.accountToAccountVo(transactionRepository.createAccount(account));
         }
-        return transactionRepository.createAccount(account);
+
+        throw new AuthorizerException("Exists account violation rules", violationRules);
+
     }
 
     /**
@@ -59,48 +74,31 @@ public class TransactionService implements ITransactionUseCase {
 
     /**
      * Create transactions operations validating several business rules
+     *
      * @param transaction transaction to create
      * @return Created transaction
      */
     @Transactional
-    public Transaction createTransaction(Transaction transaction){
-        Optional<Account> accountOptional = findAccountById(transaction.getAccount().getId());
-        List<ViolationEnum> violationEnumList = new ArrayList<>();
-        if(accountOptional.isEmpty()){
-            transaction.setAccount(new Account());
-            throw new AuthorizerException("Account not is initialized",ViolationEnum.ACCOUNT_NOT_INITIALIZED);
-        }
-
-        Account account =  accountOptional.get();
+    public AccountVo createTransaction(Transaction transaction){
+        Optional<Account> accountOptional = transactionRepository.findAccountById(transaction.getAccount().getId());
+        Account account =  accountOptional.orElse(new Account());
         transaction.setAccount(account);
-        if(Boolean.FALSE.equals(account.getActiveCard())){
-            violationEnumList.add(ViolationEnum.CARD_NOT_ACTIVE);
+
+        List<ViolationEnum> violationRules = ruleExecutor.executeRules(transaction,accountTransactionRules);
+
+        if(!violationRules.isEmpty()){
+            throw new AuthorizerException("Account not is valid for transaction",violationRules);
         }
 
-        if(account.getAvailableLimit() < transaction.getAmount()){
-            violationEnumList.add(ViolationEnum.INSUFFICIENT_LIMIT);
-        }
+        violationRules.addAll(ruleExecutor.executeRules(transaction, transactionRules));
 
-        LocalDateTime quotaDateTimeStart = transaction.getTime().minusSeconds(TransactionLimits.QUOTA_SECONDS_TRANSACTIONS_LIMIT);
-
-        LocalDateTime quotaDateTimeEnd = transaction.getTime();
-
-        Long countTransactions = transactionRepository.findCountTransactionByRangeDate(transaction.getAccount().getId(), quotaDateTimeStart, quotaDateTimeEnd);
-        log.debug("idAccount: {}, merchant: {}, quotaDateTimeStart:{},quotaDateTimeEnd:{},countTransactions:{}", transaction.getAccount().getId(), transaction.getMerchant(), quotaDateTimeStart, quotaDateTimeEnd, countTransactions);
-        if(countTransactions >= TransactionLimits.QUOTA_TRANSACTIONS_LIMIT ){
-            violationEnumList.add(ViolationEnum.HIGH_FREQUENCY_SMALL_INTERVAL);
-        }
-
-        Long countSimilarTransactions = transactionRepository.findCountSimilarTransactionsByRangeDate(transaction.getAccount().getId(), quotaDateTimeStart, quotaDateTimeEnd, transaction.getMerchant(), transaction.getAmount());
-        if(countSimilarTransactions > 0 ){
-            violationEnumList.add(ViolationEnum.DOUBLED_TRANSACTION);
-        }
-
-        if(violationEnumList.isEmpty()){
+        if(violationRules.isEmpty()){
             account.setAvailableLimit(account.getAvailableLimit() - transaction.getAmount());
             transactionRepository.updateAccount(account);
-            return transactionRepository.createTransaction(transaction);
+            Transaction createdTransaction = transactionRepository.createTransaction(transaction);
+            return ITransactionMapper.INSTANCE.accountToAccountVo(createdTransaction.getAccount());
         }
-        throw new AuthorizerException("Multiple violations in transaction creation", violationEnumList);
+
+        throw new AuthorizerException("Multiple violations in transaction creation", violationRules);
     }
 }

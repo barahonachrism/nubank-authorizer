@@ -57,41 +57,36 @@ public class TransactionController {
         StringTokenizer transactionTokenizer = new StringTokenizer(transactions,"\n");
         while(transactionTokenizer.hasMoreElements()){
             String transactionToProcess = transactionTokenizer.nextToken();
+            AccountResponse accountResponse = new AccountResponse();
             //If trying create account
             if(transactionToProcess.contains(ACCOUNT_FIELD)){
                 AccountRequest accountRequest = objectMapper.readValue(transactionToProcess, AccountRequest.class);
                 Account account = ITransactionMapper.INSTANCE.accountVoToAccount(accountRequest.getAccount());
                 account.setId(idAccount);
 
-                AccountResponse  accountResponse = new AccountResponse();
                 try{
-                    Account createdAccount = transactionService.createAccount(account);
-                    accountResponse.setAccount(ITransactionMapper.INSTANCE.accountToAccountVo(createdAccount));
+                    accountResponse.setAccount(transactionService.createAccount(account));
                 } catch(AuthorizerException ex){
                     accountResponse.setAccount(accountRequest.getAccount());
                     accountResponse.getViolations().addAll(ex.getViolationTypeList());
                 }
-                responseBuilder.append(objectMapper.writeValueAsString(accountResponse));
-                responseBuilder.append("\n");
+
             }
             //If trying to create a transaction
             else{
                 TransactionRequest transactionRequest = objectMapper.readValue(transactionToProcess, TransactionRequest.class);
                 Transaction transaction = ITransactionMapper.INSTANCE.transactionVoToTransaction(transactionRequest.getTransaction());
                 transaction.setAccount(Account.builder().id(idAccount).build());
-                AccountResponse accountResponse = new AccountResponse();
-                Transaction createdTransaction;
+
                 try{
-                    createdTransaction = transactionService.createTransaction(transaction);
-                    accountResponse.setAccount(ITransactionMapper.INSTANCE.accountToAccountVo(createdTransaction.getAccount()));
+                    accountResponse.setAccount(transactionService.createTransaction(transaction));
                 } catch(AuthorizerException ex){
                     accountResponse.setAccount(ITransactionMapper.INSTANCE.accountToAccountVo(transaction.getAccount()));
                     accountResponse.getViolations().addAll(ex.getViolationTypeList());
                 }
-
-                responseBuilder.append(objectMapper.writeValueAsString(accountResponse));
-                responseBuilder.append("\n");
             }
+            responseBuilder.append(objectMapper.writeValueAsString(accountResponse));
+            responseBuilder.append("\n");
         }
         return responseBuilder.toString();
     }

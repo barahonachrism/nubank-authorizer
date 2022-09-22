@@ -30,30 +30,57 @@ The application use the next tools and frameworks:
 ### Test source folder
 - "com.nubank.authorizer" as package base
 - "test" subpackage to implements Unit Test and Integration Test of application
-- "resources" package to locate Gerkhins features files to implement BDD testing
+- "resources" package to locate Gherkins features files to implement BDD testing
 - Unit test scenarios coded in file "test/resources/features/unit_test_transactions_account.feature" relative to project folder
 - Functional/Integration test scenarios coded in file "test/resources/features/functional_test_transactions.feature" relative to project folder
 ## Installation instructions
 1. Unzip the code
 2. Execute the next code in command line console to compile and run test:
+Windows:
 ```
 gradlew clean build
 ```
+MacOs/Linux
+```
+./gradlew clean build
+```
 3. Execute the next code to run test
+Windows:
 ```
 gradlew test
 ```
+MacOs/Linux
+```
+./gradlew test
+```
 4. Execute the next code for run standalone application in console. Replace "src\test\resources\inputs\transaction_high_frequency_small_interval.request" for another input file operations.
+Windows:
 ```
 gradlew bootRun --args='--spring.profiles.active=pro' < src\test\resources\inputs\transaction_high_frequency_small_interval.request 
 ```
+MacOs/Linux
+```
+./gradlew bootRun --args='--spring.profiles.active=pro' < src/test/resources/inputs/transaction_high_frequency_small_interval.request 
+```
 5. Execute the next code to generate Docker image
+
+Windows:
 ```
 gradlew bootBuildImage
 ```
+MacOs/Linux
+```
+./gradlew bootBuildImage
+```
 6. Run application in container mode.  Replace "src\test\resources\inputs\transaction_high_frequency_small_interval.request" for another input file operations.
+
+Windows:
 ```
 docker run --rm --name nubank-authorizer -e "SPRING_PROFILES_ACTIVE=pro" -i nubank-authorizer:0.0.1-SNAPSHOT < src\test\resources\inputs\transaction_high_frequency_small_interval.request
+```
+MacOs/Linux:
+```
+docker run --rm --name nubank-authorizer -e "SPRING_PROFILES_ACTIVE=pro" -i nubank-authorizer:0.0.1-SNAPSHOT < src/test/resources/inputs/transaction_high_frequency_small_interval.request
 ```
 7. To view the test report, open the next file relative to this project folder
 ```

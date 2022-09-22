@@ -1,6 +1,7 @@
 package com.nubank.authorizer.test;
 
 import com.nubank.authorizer.domain.exceptions.ViolationEnum;
+import com.nubank.authorizer.domain.vo.AccountVo;
 import com.nubank.authorizer.infrastructure.entities.Account;
 import com.nubank.authorizer.infrastructure.entities.Transaction;
 import com.nubank.authorizer.domain.exceptions.AuthorizerException;
@@ -43,18 +44,16 @@ public class TransactionUnitTestStepDef {
 
     @Then("^Account is created successfully$")
     public void account_is_created_successfully() throws Throwable {
-        Account savedAccount = transactionService.createAccount(account);
-
-        log.info("Created account with id {}", savedAccount.getId());
-        Assertions.assertEquals(savedAccount.getId(),account.getId());
+        AccountVo savedAccount = transactionService.createAccount(account);
+        Assertions.assertNotNull(savedAccount);
     }
 
     @When("Trying modify existing account")
     public void trying_modify_existing_account() {
         try{
-            Account savedAccount = transactionService.createAccount(account);
+            AccountVo savedAccount = transactionService.createAccount(account);
             savedAccount.setAvailableLimit(1000);
-            Account savedAccountAgain = transactionService.createAccount(account);
+            transactionService.createAccount(account);
         } catch(AuthorizerException ex){
             this.violationTypeList = ex.getViolationTypeList();
         }
@@ -101,8 +100,8 @@ public class TransactionUnitTestStepDef {
 
     @Then("Create transaction successfully")
     public void create_transaction_successfully() {
-        Transaction createdTransaction = transactionService.createTransaction(transaction);
-        log.info("Id transaction: {}",createdTransaction.getId());
+        AccountVo accountVo = transactionService.createTransaction(transaction);
+        Assertions.assertTrue(accountVo.getActiveCard());
     }
 
     @Given("Transaction amount: {int}, merchant: {string}, time: {string}")
