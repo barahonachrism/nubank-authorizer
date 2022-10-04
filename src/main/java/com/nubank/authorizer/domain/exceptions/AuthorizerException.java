@@ -15,10 +15,4 @@ public class AuthorizerException extends RuntimeException{
         super(message);
         this.violationTypeList = violationTypeList;
     }
-
-    public AuthorizerException(String message, ViolationEnum violationType){
-        super(message);
-        this.violationTypeList = new ArrayList<>();
-        violationTypeList.add(violationType);
-    }
 }

@@ -24,6 +24,5 @@ class CucumberConfigTest {
     @Test
     void dummyTest(){
         Assertions.assertTrue(true,"This test is used for pass Sonar rule blocker");
-
     }
 }

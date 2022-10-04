@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Process transactions and account operations of credit card account
@@ -60,16 +59,6 @@ public class TransactionService implements ITransactionUseCase {
 
         throw new AuthorizerException("Exists account violation rules", violationRules);
 
-    }
-
-    /**
-     * Find account by ID
-     * @param idAccount ID account
-     * @return account
-     */
-    @Override
-    public Optional<Account> findAccountById(UUID idAccount) {
-        return transactionRepository.findAccountById(idAccount);
     }
 
     /**

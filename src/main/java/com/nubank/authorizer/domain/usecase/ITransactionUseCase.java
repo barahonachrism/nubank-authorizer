@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public interface ITransactionUseCase {
     AccountVo createAccount(Account account);
-    Optional<Account> findAccountById(UUID idAccount);
+
     AccountVo createTransaction(Transaction transaction);
 
 }

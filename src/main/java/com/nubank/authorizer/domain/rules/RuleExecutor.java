@@ -18,9 +18,7 @@ public class RuleExecutor {
         List<ViolationEnum> violationRules = new ArrayList<>();
         for(INubankRule<E> rule : rules){
             Optional<ViolationEnum> violationRule = rule.validate(entity);
-            if(violationRule.isPresent()){
-                violationRules.add(violationRule.get());
-            }
+            violationRule.ifPresent(violationRules::add);
         }
         return violationRules;
     }
