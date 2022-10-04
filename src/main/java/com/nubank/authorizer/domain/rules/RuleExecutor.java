@@ -10,14 +10,13 @@ import java.util.Optional;
 
 /**
  * This class execute a rule list, and collect the set of violations of each rule
- * @param <E> entity to validate
  */
 @Component
-public class RuleExecutor<E> {
+public class RuleExecutor {
 
-    public List<ViolationEnum> executeRules(E entity, List< ? extends INubankRule<?>> rules){
+    public <E> List<ViolationEnum> executeRules(E entity, List<? extends INubankRule<E>> rules){
         List<ViolationEnum> violationRules = new ArrayList<>();
-        for(INubankRule rule : rules){
+        for(INubankRule<E> rule : rules){
             Optional<ViolationEnum> violationRule = rule.validate(entity);
             if(violationRule.isPresent()){
                 violationRules.add(violationRule.get());
